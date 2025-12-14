@@ -1,0 +1,5 @@
+begin_progr
+    int numar;
+    int as;
+
+end_progr

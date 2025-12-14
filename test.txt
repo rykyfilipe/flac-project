@@ -1,0 +1,6 @@
+int
+class
+asdf
+float
+bool
+end_program
