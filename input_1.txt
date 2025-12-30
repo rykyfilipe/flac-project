@@ -1,0 +1,32 @@
+int x;
+float pi;
+bool isGata;
+
+int suma(int a, int b);
+float media();
+
+class Masina {
+    string model;
+}
+
+begin_progr
+    x = 10;
+    pi = 3.14;
+    
+    if (x > 5) {
+        x = 1;
+    } else {
+        x = 0;
+    }
+
+    while (x < 20) {
+        x = 2;
+    }
+
+    for (i = 0; i < 10; i = 1) {
+        suma(1, 2);
+    }
+
+    media(10, xsdf,"asdf");
+
+end_progr

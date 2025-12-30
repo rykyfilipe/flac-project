@@ -1,5 +1,7 @@
+int x;
+
 begin_progr
-    int numar;
-    int as;
+    
+    media(10,a,"aa",true);
 
 end_progr

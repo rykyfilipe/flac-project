@@ -41,7 +41,7 @@ extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
 /* Line 2058 of yacc.c  */
-#line 13 "limbaj.y"
+#line 14 ".\\limbaj.y"
 
     #include <string>
     using namespace std;
@@ -58,12 +58,20 @@ extern int yydebug;
    enum yytokentype {
      ID = 258,
      TYPE = 259,
-     CLASS = 260,
-     RETURN = 261,
-     BGIN = 262,
-     END = 263,
-     ASSIGN = 264,
-     NR = 265
+     STRING = 260,
+     NR = 261,
+     BVAL = 262,
+     FNR = 263,
+     CLASS = 264,
+     RETURN = 265,
+     BGIN = 266,
+     END = 267,
+     ASSIGN = 268,
+     IF = 269,
+     ELSE = 270,
+     WHILE = 271,
+     FOR = 272,
+     CMP = 273
    };
 #endif
 
@@ -72,14 +80,16 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 20 "limbaj.y"
+#line 19 ".\\limbaj.y"
 
     std::string* Str;
     int IntVal;
+    float FloatVal;
+    bool BoolVal;
 
 
 /* Line 2058 of yacc.c  */
-#line 83 "limbaj.tab.h"
+#line 93 "limbaj.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

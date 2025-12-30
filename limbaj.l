@@ -13,38 +13,45 @@ using namespace std;
 %% 
 "int"|"float"|"string"|"bool" { 
     yylval.Str = new std::string(yytext);
-    cout << "TYPE : " << yytext << endl; 
     return TYPE; 
 }
 "class" { 
-    cout << "CLASS" << endl;
     return CLASS; 
 }
 "return" { 
-    cout << "RETURN" << endl; 
     return RETURN;
 }
 "begin_progr" { 
-    cout << "BEGIN_PROGRAM" << endl;
     return BGIN; 
 }
 "end_progr" {
-    cout << "END_PROGRAM" << endl;
     return END; 
 }
 "=" { 
-    cout << "ASSIGN" << endl;
     return ASSIGN;
 }
+[0-9]+\.[0-9]+ { yylval.FloatVal = atof(yytext); return FNR; }
+"if"         { return IF; }
+"else"       { return ELSE; }
+"while"      { return WHILE; }
+"for"        { return FOR; }
+"true"       { yylval.IntVal = 1; return BVAL; }
+"false"      { yylval.IntVal = 0; return BVAL; }
 [a-zA-Z][a-zA-Z0-9]* { 
     yylval.Str = new std::string(yytext);
-    cout << "ID : " << yytext << endl;
     return ID; 
 }
 [0-9]+ {
     yylval.IntVal = atoi(yytext); 
-    cout << "NR : " << yytext << endl;    
     return NR;
 }
+"=="|"!="|"<"|">"|"<="|">=" { return CMP; }
+
+\"[a-zA-Z0-9 ]*\" {
+    std::string temp(yytext);
+    yylval.Str = new std::string(temp.substr(1, temp.size() - 2)); 
+    return STRING;
+}
 [ \t\n]+        { /* ignora spatii */ }
+
 .               { return yytext[0];}
