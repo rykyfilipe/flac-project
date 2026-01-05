@@ -23,110 +23,131 @@ extern int yylineno;
     bool BoolVal;
 }
 
-%start progr
+%start program
 
+%token PRINT CLASS RETURN BGIN END ASSIGN IF ELSE WHILE FOR CMP 
 %token <Str> ID TYPE STRING
-%token <IntVal> NR BVAL
+%token <IntVal> NR
 %token <FloatVal> FNR
-%token CLASS RETURN BGIN END ASSIGN IF ELSE WHILE FOR CMP 
+%token <BoolVal> BVAL
+
+/* precedenta operatorilor */
+%left '|'
+%left '&'
+%left CMP
+%left '+' '-'
+%left '*' '/' '%'
 
 %%
 
-progr
-    : declarations main
+program
+    : global_list main_block
+      { cout << "Program is corect" << endl; }
     ;
 
-declarations
-    : decl
-    | declarations decl
-    | declarations class
+global_list
+    : /* empty */
+    | global_list class_decl
+    | global_list func_decl
+    | global_list var_decl
     ;
 
-decl
-    : TYPE ID ';' {
-        cout << "variabila cu tipul " << *$1 << " si id-ul: " << *$2 << endl;
-        delete $1; delete $2;
-      }
-    | TYPE ID '(' list_param ')' ';' {
-        cout << "functie cu tipul " << *$1 << " si id-ul: " << *$2 << endl;
-        delete $1; delete $2;
-      }
-    | TYPE ID '(' ')' ';' {
-        cout << "functie cu tipul " << *$1 << " si id-ul: " << *$2 << " si fara params" << endl;
-        delete $1; delete $2;
-      }
+main_block
+    : BGIN stmt_list END
     ;
 
-class
-    : CLASS ID '{' decl '}' {
-        cout << "clasa cu id-ul: " << *$2 << endl;
-        delete $2;
-      }
+class_decl
+    : CLASS ID '{' class_body '}'
+      { cout << "Class identified: " << *$2 << endl; }
     ;
 
-list_param
-    : param
-    | list_param ',' param
+class_body
+    : /* empty */
+    | class_body var_decl
+    | class_body func_decl
     ;
 
-param
-    : TYPE ID {
-        cout << "parametru cu tipul: " << *$1 << " si id-ul: " << *$2 << endl;
-        delete $1; delete $2;
-      }
+func_decl
+    : TYPE ID '(' param_list ')' '{' func_body '}'
+      { cout << "Functie identificata: " << *$1 << " " << *$2 << endl; }
+    | TYPE ID '(' ')' '{' func_body '}'
+      { cout << "Functie identificata fara params: " << *$1 << " " << *$2 << endl; }
     ;
 
-main
-    : BGIN list_statements END
+func_body
+    : decl_list stmt_list
     ;
 
-
-
-statement
-    : ID ASSIGN expression ';' { 
-        cout << "Atribuire la variabila " << *$1; 
-        delete $1; 
-      }
-    | IF '(' condition ')' block ELSE block { cout << "S-a detectat un IF-ELSE\n"; }
-    | WHILE '(' condition ')' block { cout << "S-a detectat un WHILE\n"; }
-    | FOR '(' ID ASSIGN expression ';' condition ';' ID ASSIGN expression  ')' block { cout << "S-a detectat un FOR\n"; }
-    | ID '(' call_list ')' ';' { cout << "Apel functie: " << *$1 << endl; delete $1; }
+decl_list
+    : /* empty */
+    | decl_list var_decl
     ;
 
-
-expression
-    : ID { cout << " id_e : " << *$1 << endl; delete $1; }
-    | NR {cout << " val : " << $1 << endl; }
-    | FNR {cout << " val : " << $1 << endl; }
-    | BVAL{cout << " val : " << $1 << endl; }
+param_list
+    : param_decl
+    | param_list ',' param_decl
     ;
 
-condition
-    : expression CMP expression
-    | expression
+param_decl
+    : TYPE ID
     ;
 
-block
-    : '{' list_statements '}'
-    | statement 
+stmt_list
+    : /* empty */
+    | stmt_list stmt
     ;
 
-list_statements
-    : statement 
-    | list_statements statement 
+stmt
+    : assign_stmt ';'
+    | control_stmt
+    | call_stmt ';'
+    | PRINT '(' expr ')' ';'
+    | RETURN expr ';'
     ;
 
-call_list
-    : call_list_value
-    | call_list ',' call_list_value
+assign_stmt
+    : ID ASSIGN expr
+    | ID '.' ID ASSIGN expr
     ;
 
-call_list_value : ID
+call_stmt
+    : ID '(' args_list ')'
+    | ID '.' ID '(' args_list ')'
+    ;
+
+control_stmt
+    : IF '(' expr ')' '{' stmt_list '}'
+    | WHILE '(' expr ')' '{' stmt_list '}'
+    ;
+
+var_decl
+    : TYPE ID ';'
+    | TYPE ID ASSIGN expr ';'
+    ;
+
+expr
+    : expr '+' expr
+    | expr '-' expr
+    | expr '*' expr
+    | expr '/' expr
+    | expr '%' expr
+    | expr CMP expr
+    | expr '&' expr
+    | expr '|' expr
+    | '(' expr ')'
+    | ID
+    | ID '.' ID
+    | call_stmt
     | NR
-    | BVAL {cout << "bool detected";}
     | FNR
+    | BVAL
     | STRING
-    | ID '(' call_list ')'
+    ;
+
+args_list
+    : /* empty */
+    | expr
+    | args_list ',' expr
     ;
 
 %%

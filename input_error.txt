@@ -1,0 +1,16 @@
+begin_progr
+    int x;
+
+    int badFunction() {
+        return 5;
+    }
+
+    class Bad {
+        int a;
+    }
+
+    if (x < 10) {
+        int y;
+        y = 5;
+    }
+end_progr

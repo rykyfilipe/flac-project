@@ -1,0 +1,50 @@
+class Person {
+    string name;
+    int age;
+
+    int getAge() {
+        int x;
+        x = age;
+        return x;
+    }
+
+    float setAge(int a) {
+        age = a;
+    }
+}
+
+int sum(int a, int b) {
+    int result;
+    result = a + b;
+    return result;
+}
+
+float avg(float a, float b) {
+    float r;
+    r = (a + b) / 2.0 & a;
+    return r;
+}
+
+begin_progr
+   
+    x = 10;
+    y = 3.5;
+    ok = true;
+    msg = "hello";
+
+    print(x);
+    print(y);
+    print(msg);
+
+    x = sum(x, 5);
+    y = avg(y, 7.5);
+
+    if (x > 10) {
+        print(x);
+    }
+
+    while (x < 20 & x <= 8 | c) {
+        x = x + 1;
+        print(x);
+    }
+end_progr
