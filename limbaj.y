@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
+#include "SymTable.h"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ extern int yylex();
 void yyerror(const char* s);
 extern FILE* yyin;
 extern int yylineno;
+class SymTable* current;
 %}
 
 %code requires {
@@ -21,15 +23,17 @@ extern int yylineno;
     int IntVal;
     float FloatVal;
     bool BoolVal;
+
 }
 
 %start program
 
-%token PRINT CLASS RETURN BGIN END ASSIGN IF ELSE WHILE FOR CMP 
+%token NEW PRINT CLASS RETURN BGIN END ASSIGN IF ELSE WHILE FOR CMP 
 %token <Str> ID TYPE STRING
 %token <IntVal> NR
 %token <FloatVal> FNR
 %token <BoolVal> BVAL
+
 
 /* precedenta operatorilor */
 %left '|'
@@ -50,6 +54,8 @@ global_list
     | global_list class_decl
     | global_list func_decl
     | global_list var_decl
+    | global_list object_decl
+
     ;
 
 main_block
@@ -69,9 +75,15 @@ class_body
 
 func_decl
     : TYPE ID '(' param_list ')' '{' func_body '}'
-      { cout << "Functie identificata: " << *$1 << " " << *$2 << endl; }
+      { cout << "Functie identificata: " << *$1 << " " << *$2 << endl;
+        
+       }
     | TYPE ID '(' ')' '{' func_body '}'
       { cout << "Functie identificata fara params: " << *$1 << " " << *$2 << endl; }
+    | ID ID '(' param_list ')' '{' func_body '}'
+      { cout << "Constructor identificat: " << *$1 << " " << *$2 << endl; }
+    | ID ID '(' ')' '{' func_body '}'
+      { cout << "Constructor identificat fara params: " << *$1 << " " << *$2 << endl; }
     ;
 
 func_body
@@ -90,6 +102,7 @@ param_list
 
 param_decl
     : TYPE ID
+    | ID ID
     ;
 
 stmt_list
@@ -125,6 +138,11 @@ var_decl
     | TYPE ID ASSIGN expr ';'
     ;
 
+object_decl
+    : ID ID ';'
+    | ID ID ASSIGN expr ';'
+    ;
+
 expr
     : expr '+' expr
     | expr '-' expr
@@ -142,6 +160,7 @@ expr
     | FNR
     | BVAL
     | STRING
+    | NEW ID '(' args_list ')'
     ;
 
 args_list

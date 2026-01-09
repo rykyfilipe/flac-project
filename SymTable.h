@@ -18,7 +18,8 @@ class SymTable {
     map<string, IdInfo> ids;
     string name;
     public:
-    SymTable(const char* , SymTable* parent = NULL) :  name(name){}
+    SymTable(const char* , SymTable* parent = NULL) :  name(name){
+    }
     bool existsId(string* s);
     void addVar(string* type, string* name );
     void printVars();

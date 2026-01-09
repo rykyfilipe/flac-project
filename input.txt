@@ -1,5 +1,9 @@
 int x;
 
+class Product {
+    
+}
+
 begin_progr
     
     media(10,a,"aa",true);

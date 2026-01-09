@@ -41,7 +41,7 @@ extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
 /* Line 2058 of yacc.c  */
-#line 14 "limbaj.y"
+#line 16 "limbaj.y"
 
     #include <string>
     using namespace std;
@@ -56,23 +56,24 @@ extern int yydebug;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     PRINT = 258,
-     CLASS = 259,
-     RETURN = 260,
-     BGIN = 261,
-     END = 262,
-     ASSIGN = 263,
-     IF = 264,
-     ELSE = 265,
-     WHILE = 266,
-     FOR = 267,
-     CMP = 268,
-     ID = 269,
-     TYPE = 270,
-     STRING = 271,
-     NR = 272,
-     FNR = 273,
-     BVAL = 274
+     NEW = 258,
+     PRINT = 259,
+     CLASS = 260,
+     RETURN = 261,
+     BGIN = 262,
+     END = 263,
+     ASSIGN = 264,
+     IF = 265,
+     ELSE = 266,
+     WHILE = 267,
+     FOR = 268,
+     CMP = 269,
+     ID = 270,
+     TYPE = 271,
+     STRING = 272,
+     NR = 273,
+     FNR = 274,
+     BVAL = 275
    };
 #endif
 
@@ -81,7 +82,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 19 "limbaj.y"
+#line 21 "limbaj.y"
 
     std::string* Str;
     int IntVal;
@@ -89,8 +90,9 @@ typedef union YYSTYPE
     bool BoolVal;
 
 
+
 /* Line 2058 of yacc.c  */
-#line 94 "limbaj.tab.h"
+#line 96 "limbaj.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

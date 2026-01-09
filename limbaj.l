@@ -18,7 +18,7 @@ using namespace std;
     yylval.Str = new std::string(yytext);
     return TYPE;
 }
-
+"new"          {return NEW; }
 "print"        { return PRINT; }
 "class"        { return CLASS; }
 "return"       { return RETURN; }
