@@ -1,0 +1,72 @@
+=== Symbol Table: Function: getAge ===
+Parent Scope: Class: Person
+--------------------------------------------------
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+x 	 | variable 	 | int 	 | 
+
+=== Symbol Table: Function: setAge ===
+Parent Scope: Class: Person
+--------------------------------------------------
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+a 	 | param 	 | int 	 | 
+
+=== Symbol Table: Class: Person ===
+Parent Scope: Global
+--------------------------------------------------
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+age 	 | variable 	 | int 	 | 
+getAge 	 | function 	 | int 	 | ()
+name 	 | variable 	 | string 	 | 
+setAge 	 | function 	 | float 	 | ()
+
+=== Symbol Table: Function: sum ===
+Parent Scope: Global
+--------------------------------------------------
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+a 	 | param 	 | int 	 | 
+asdfd 	 | param 	 | Product 	 | 
+b 	 | param 	 | int 	 | 
+result 	 | variable 	 | int 	 | 
+
+=== Symbol Table: Function: avg ===
+Parent Scope: Global
+--------------------------------------------------
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+a 	 | param 	 | float 	 | 
+b 	 | param 	 | float 	 | 
+r 	 | variable 	 | float 	 | 
+
+=== Symbol Table: If_Block ===
+Parent Scope: Main
+--------------------------------------------------
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+
+=== Symbol Table: While_Block ===
+Parent Scope: Main
+--------------------------------------------------
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+
+=== Symbol Table: Main ===
+Parent Scope: Global
+--------------------------------------------------
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+
+=== Symbol Table: Global ===
+Parent Scope: NULL (Global)
+--------------------------------------------------
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+Person 	 | class 	 | class 	 | 
+avg 	 | function 	 | float 	 | ()
+m 	 | object 	 | Product 	 | 
+sum 	 | function 	 | int 	 | ()
+x 	 | variable 	 | int 	 | 
+

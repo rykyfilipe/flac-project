@@ -24,7 +24,7 @@ float avg(float a, float b) {
     r = (a + b) / 2.0 & a;
     return r;
 }
-
+int x;
 Product m = new Product(asdf);
 
 begin_progr

@@ -1,5 +1,5 @@
 
-#line 2 "lex.yy.c"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -538,8 +538,8 @@ char *yytext;
 using namespace std;
 
 #include "limbaj.tab.h"
-#line 541 "lex.yy.c"
 #line 542 "lex.yy.c"
+#line 543 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -550,7 +550,7 @@ using namespace std;
  */
 #include <unistd.h>
 #endif
-    
+
 #ifndef YY_EXTRA_TYPE
 #define YY_EXTRA_TYPE void *
 #endif
@@ -759,7 +759,7 @@ YY_DECL
 #line 15 "limbaj.l"
 
 
-#line 762 "lex.yy.c"
+#line 763 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -959,7 +959,7 @@ YY_RULE_SETUP
 #line 69 "limbaj.l"
 ECHO;
 	YY_BREAK
-#line 962 "lex.yy.c"
+#line 963 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
