@@ -16,18 +16,17 @@ extern int yylineno;
 SymTable* current = NULL;
 ofstream tableFile("tables.txt");
 
-// Funcții ajutătoare pentru a face codul Bison mai curat
+// Reținem numele funcției curente pentru a adăuga parametrii în tabela părinte
+string currentFuncName = "";
+
 void enter_scope(string name) {
     current = new SymTable(name, current);
 }
 
 void exit_scope() {
     if (current) {
-        current->printTable(tableFile); // Scriem în fișier înainte să "pierdem" tabelul
+        current->printTable(tableFile);
         SymTable* parent = current->getParent();
-        // Nu ștergem pointerul 'current' aici dacă vrem să păstrăm tabelele în memorie, 
-        // dar pentru acest exercițiu doar îl scoatem din stivă.
-        // delete current; // Decomment dacă vrei să eliberezi memoria imediat
         current = parent;
     }
 }
@@ -40,17 +39,12 @@ void exit_scope() {
 
 %union {
     std::string* Str;
-    int IntVal;
-    float FloatVal;
-    bool BoolVal;
+    /* NR, FNR și BVAL vor fi tratate ca Str pentru a stoca valoarea lor textuală în tabelă */
 }
 
 /* Tokens */
-%token NEW PRINT CLASS RETURN BGIN END ASSIGN IF ELSE WHILE FOR CMP 
-%token <Str> ID TYPE STRING
-%token <IntVal> NR
-%token <FloatVal> FNR
-%token <BoolVal> BVAL
+%token NEW PRINT CLASS RETURN BGIN END ASSIGN IF ELSE WHILE FOR 
+%token <Str> ID TYPE STRING NR FNR BVAL CMP
 
 /* Precedenta */
 %left '|'
@@ -59,17 +53,21 @@ void exit_scope() {
 %left '+' '-'
 %left '*' '/' '%'
 
-%%
+/* Tipuri pentru reguli ne-terminale */
+%type <Str> expr
 
+%%
 program
-    : { enter_scope("Global"); } /* Inițializare Global Scope */
-      global_list main_block
+    : global_scope_start global_list main_block
       { 
           cout << "Program is correct" << endl; 
-          exit_scope(); /* Închide Global Scope la final */
+          exit_scope(); 
       }
     ;
 
+global_scope_start
+    : /* empty */ { enter_scope("Global"); }
+    ;
 global_list
     : /* empty */
     | global_list class_decl
@@ -86,9 +84,7 @@ main_block
 class_decl
     : CLASS ID 
       { 
-        /* Adăugăm numele clasei în scope-ul PĂRINTE (Global) */
         current->addSymbol("class", *$2, "class");
-        /* Intrăm în scope-ul clasei */
         enter_scope("Class: " + *$2); 
       }
       '{' class_body '}'
@@ -105,41 +101,59 @@ class_body
     ;
 
 func_decl
+    /* 1. Funcție cu tip primitiv + Parametri */
     : TYPE ID '(' 
       { 
          current->addSymbol(*$1, *$2, "function");
-         
+         currentFuncName = *$2;
          enter_scope("Function: " + *$2); 
       }
       param_list ')' '{' func_body '}'
-      { 
-        cout << "Functie identificata: " << *$1 << " " << *$2 << endl;
-        exit_scope(); 
-      }
-      
+      { currentFuncName = ""; exit_scope(); }
+
+    /* 2. Funcție cu tip primitiv, FĂRĂ Parametri */
     | TYPE ID '(' ')' 
       { 
          current->addSymbol(*$1, *$2, "function");
          enter_scope("Function: " + *$2); 
       }
       '{' func_body '}'
-      { 
-         cout << "Functie identificata fara params" << endl; 
-         exit_scope();
-      }
-      
+      { exit_scope(); }
+
+    /* 3. Funcție care returnează o Clasă (ID) + Parametri */
     | ID ID '(' 
       { 
-         current->addSymbol(*$1, *$2, "constructor");
-         enter_scope("Constructor: " + *$2); 
+         current->addSymbol(*$1, *$2, "function");
+         currentFuncName = *$2;
+         enter_scope("Function: " + *$2); 
       }
       param_list ')' '{' func_body '}'
-      { exit_scope(); }
-      
+      { currentFuncName = ""; exit_scope(); }
+
+    /* 4. Funcție care returnează o Clasă (ID), FĂRĂ Parametri */
     | ID ID '(' ')' 
       { 
-         current->addSymbol(*$1, *$2, "constructor");
-         enter_scope("Constructor: " + *$2); 
+         current->addSymbol(*$1, *$2, "function");
+         enter_scope("Function: " + *$2); 
+      }
+      '{' func_body '}'
+      { exit_scope(); }
+
+    /* 5. Constructor + Parametri (ex: Person(int a)) */
+    | ID '(' 
+      { 
+         current->addSymbol("class_type", *$1, "constructor");
+         currentFuncName = *$1;
+         enter_scope("Constructor: " + *$1); 
+      }
+      param_list ')' '{' func_body '}'
+      { currentFuncName = ""; exit_scope(); }
+
+    /* 6. Constructor FĂRĂ Parametri (ex: Person()) */
+    | ID '(' ')' 
+      { 
+         current->addSymbol("class_type", *$1, "constructor");
+         enter_scope("Constructor: " + *$1); 
       }
       '{' func_body '}'
       { exit_scope(); }
@@ -162,12 +176,18 @@ param_list
 param_decl
     : TYPE ID
       {
-         current->addSymbol(*$1, *$2, "param");
-         
+          current->addSymbol(*$1, *$2, "param");
+          // Adăugăm tipul parametrului în fișa funcției din scope-ul părinte
+          if(current->getParent() && currentFuncName != "") {
+              current->getParent()->addFuncParam(currentFuncName, *$1);
+          }
       }
     | ID ID
       {
-         current->addSymbol(*$1, *$2, "param");
+          current->addSymbol(*$1, *$2, "param");
+          if(current->getParent() && currentFuncName != "") {
+              current->getParent()->addFuncParam(currentFuncName, *$1);
+          }
       }
     ;
 
@@ -185,16 +205,13 @@ stmt
     ;
 
 assign_stmt
-    : ID ASSIGN expr { 
+    : ID ASSIGN expr 
+      { 
         if(!current->existsId(*$1)) 
             cout << "Error: Variable " << *$1 << " not declared!" << endl;
+        else
+            current->updateValue(*$1, *$3); // Actualizăm valoarea
       }
-    | ID '.' ID ASSIGN expr
-    ;
-
-call_stmt
-    : ID '(' args_list ')'
-    | ID '.' ID '(' args_list ')'
     ;
 
 control_stmt
@@ -202,11 +219,26 @@ control_stmt
       { enter_scope("If_Block"); } 
       stmt_list '}' 
       { exit_scope(); }
-      
     | WHILE '(' expr ')' '{' 
       { enter_scope("While_Block"); } 
       stmt_list '}' 
       { exit_scope(); }
+    ;
+
+call_stmt
+    : ID '(' args_list ')'
+      {
+          if(!current->existsId(*$1)) {
+              cout << "Error: Function " << *$1 << " called but not defined (line " << yylineno << ")" << endl;
+          }
+      }
+    | ID '.' ID '(' args_list ')'
+      {
+          // Verifici dacă obiectul (primul ID) există
+          if(!current->existsId(*$1)) {
+              cout << "Error: Object " << *$1 << " undeclared (line " << yylineno << ")" << endl;
+          }
+      }
     ;
 
 var_decl
@@ -216,8 +248,9 @@ var_decl
       }
     | TYPE ID ASSIGN expr ';'
       { 
-        current->addSymbol(*$1, *$2, "variable"); 
+        current->addSymbol(*$1, *$2, "variable", *$4); 
       }
+    
     ;
 
 object_decl
@@ -227,31 +260,37 @@ object_decl
       }
     | ID ID ASSIGN expr ';'
       {
-        current->addSymbol(*$1, *$2, "object");
+        current->addSymbol(*$1, *$2, "object", *$4);
       }
     ;
 
 expr
-    : expr '+' expr
-    | expr '-' expr
-    | expr '*' expr
-    | expr '/' expr
-    | expr '%' expr
-    | expr CMP expr
-    | expr '&' expr
-    | expr '|' expr
-    | '(' expr ')'
+    : expr '+' expr { $$ = new string(*$1 + "+" + *$3); }
+    | expr '-' expr { $$ = new string(*$1 + "-" + *$3); }
+    | expr '*' expr { $$ = new string(*$1 + "*" + *$3); }
+    | expr '/' expr { $$ = new string(*$1 + "/" + *$3); }
+    | expr CMP expr { $$ = new string(*$1 + *$2 + *$3); }
+    | '(' expr ')'  { $$ = $2; }
     | ID { 
         if(!current->existsId(*$1)) 
-             cout << "Error: ID " << *$1 << " used but not declared (line " << yylineno << ")" << endl; 
+             cout << "Error: ID " << *$1 << " undeclared (line " << yylineno << ")" << endl; 
+        $$ = $1;
       }
-    | ID '.' ID
-    | call_stmt
-    | NR
-    | FNR
-    | BVAL
-    | STRING
+    | NR     { $$ = $1; }
+    | FNR    { $$ = $1; }
+    | BVAL   { $$ = $1; }
+    | STRING { $$ = $1; }
+    | call_stmt { $$ = new string("call"); }
     | NEW ID '(' args_list ')'
+      {
+          // Verificăm dacă clasa (tipul obiectului) există în tabelă
+          if(!current->existsId(*$2)) {
+              cout << "Error: Class " << *$2 << " not defined for NEW (line " << yylineno << ")" << endl;
+          }
+          // Returnăm reprezentarea textuală a apelului de constructor
+          $$ = new string("new " + *$2 + "(...)");
+      }
+   
     ;
 
 args_list
@@ -269,14 +308,8 @@ void yyerror(const char* s) {
 int main(int argc, char** argv) {
     if (argc > 1) {
         yyin = fopen(argv[1], "r");
-        if (!yyin) {
-            cerr << "Nu pot deschide fisierul " << argv[1] << endl;
-            return 1;
-        }
     }
-
     yyparse();
-    
-    tableFile.close(); // Închidem fișierul de ieșire
+    tableFile.close();
     return 0;
 }

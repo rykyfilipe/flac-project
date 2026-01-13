@@ -1,5 +1,5 @@
 
-#line 3 "lex.yy.c"
+#line 2 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -389,11 +389,11 @@ static const flex_int16_t yy_accept[95] =
        19,   19,   19,   19,   20,   12,    0,   18,    0,   17,
        19,   19,   19,   19,   19,   19,   19,   19,   19,    8,
        19,   19,   19,   19,   19,   19,   19,   16,   19,   19,
-       19,   19,   19,   19,   19,   11,    1,    2,   19,   19,
+       19,   19,   19,   19,   19,   11,    3,    4,   19,   19,
        19,   19,   19,   19,   19,    9,    0,   19,   19,   19,
-       19,   19,   14,   19,   19,    4,    0,   15,    3,   19,
-       19,   10,    0,    0,    5,    0,    0,    0,    0,    0,
-        7,    0,    6,    0
+       19,   19,   14,   19,   19,    6,    0,   15,    5,   19,
+       19,   10,    0,    0,    7,    0,    0,    0,    0,    0,
+        2,    0,    1,    0
 
     } ;
 
@@ -538,8 +538,8 @@ char *yytext;
 using namespace std;
 
 #include "limbaj.tab.h"
+#line 541 "lex.yy.c"
 #line 542 "lex.yy.c"
-#line 543 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -550,7 +550,7 @@ using namespace std;
  */
 #include <unistd.h>
 #endif
-
+    
 #ifndef YY_EXTRA_TYPE
 #define YY_EXTRA_TYPE void *
 #endif
@@ -758,8 +758,7 @@ YY_DECL
 	{
 #line 15 "limbaj.l"
 
-
-#line 763 "lex.yy.c"
+#line 761 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -828,107 +827,107 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
+#line 16 "limbaj.l"
+{ return BGIN; }
+	YY_BREAK
+case 2:
+YY_RULE_SETUP
 #line 17 "limbaj.l"
+{ return END; }
+	YY_BREAK
+case 3:
+YY_RULE_SETUP
+#line 19 "limbaj.l"
 {
     yylval.Str = new std::string(yytext);
     return TYPE;
 }
 	YY_BREAK
-case 2:
-YY_RULE_SETUP
-#line 21 "limbaj.l"
-{return NEW; }
-	YY_BREAK
-case 3:
-YY_RULE_SETUP
-#line 22 "limbaj.l"
-{ return PRINT; }
-	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 23 "limbaj.l"
-{ return CLASS; }
+{return NEW; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 24 "limbaj.l"
-{ return RETURN; }
+{ return PRINT; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 25 "limbaj.l"
-{ return BGIN; }
+{ return CLASS; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 26 "limbaj.l"
-{ return END; }
+{ return RETURN; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 27 "limbaj.l"
+#line 28 "limbaj.l"
 { return IF; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 28 "limbaj.l"
+#line 29 "limbaj.l"
 { return ELSE; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 29 "limbaj.l"
+#line 30 "limbaj.l"
 { return WHILE; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 30 "limbaj.l"
+#line 31 "limbaj.l"
 { return FOR; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 32 "limbaj.l"
-{ return CMP; }
+#line 33 "limbaj.l"
+{ 
+    yylval.Str = new std::string(yytext); 
+    return CMP; 
+}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 33 "limbaj.l"
+#line 37 "limbaj.l"
 { return ASSIGN; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 35 "limbaj.l"
-{
-    yylval.BoolVal = true;
-    return BVAL;
+#line 39 "limbaj.l"
+{ 
+    yylval.Str = new string(yytext); 
+    return BVAL; 
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 39 "limbaj.l"
-{
-    yylval.BoolVal = false;
-    return BVAL;
+#line 44 "limbaj.l"
+{ 
+    yylval.Str = new string(yytext); 
+    return BVAL; 
 }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 44 "limbaj.l"
-{
-    yylval.FloatVal = atof(yytext);
-    return FNR;
-}
+#line 49 "limbaj.l"
+{ yylval.Str = new string(yytext); return FNR; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 49 "limbaj.l"
-{
-    yylval.IntVal = atoi(yytext);
-    return NR;
+#line 51 "limbaj.l"
+{ 
+    yylval.Str = new string(yytext); 
+    return NR; 
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 54 "limbaj.l"
+#line 56 "limbaj.l"
 {
     std::string temp(yytext);
     yylval.Str = new std::string(temp.substr(1, temp.size() - 2));
@@ -937,7 +936,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 60 "limbaj.l"
+#line 62 "limbaj.l"
 {
     yylval.Str = new std::string(yytext);
     return ID;
@@ -946,20 +945,20 @@ YY_RULE_SETUP
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 65 "limbaj.l"
+#line 67 "limbaj.l"
 { /* ignore */ }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 67 "limbaj.l"
+#line 69 "limbaj.l"
 { return yytext[0]; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 69 "limbaj.l"
+#line 71 "limbaj.l"
 ECHO;
 	YY_BREAK
-#line 963 "lex.yy.c"
+#line 961 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1976,6 +1975,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 69 "limbaj.l"
+#line 71 "limbaj.l"
 
 

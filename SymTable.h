@@ -37,6 +37,8 @@ public:
     // Adaugă info despre parametri (pentru funcții)
     void addFuncParam(string funcName, string paramType);
 
+    void updateValue(string name, string newValue);
+    
     // Printează tabelul curent în fișier
     void printTable(ofstream& out);
 

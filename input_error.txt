@@ -1,16 +1,24 @@
+class Person {
+    int age;
+    Person(int a) { age = a; }
+}
+
 begin_progr
-    int x;
+    /* EROARE 1: Variabila 'z' nu a fost declarata */
+    z = 100;
 
-    int badFunction() {
-        return 5;
-    }
+    /* EROARE 2: Clasa 'Animal' nu exista in tabela de simboluri */
+    Animal caine;
+    caine = new Animal();
 
-    class Bad {
-        int a;
-    }
+    /* EROARE 3: Functia 'calculInexistent' nu este definita */
+    int rez;
+    rez = calculInexistent(10, 20);
 
-    if (x < 10) {
-        int y;
-        y = 5;
-    }
+    /* EROARE 4: 'y' este folosit intr-o expresie fara sa fie declarat */
+    int total;
+    total = 10 + y;
+
+    /* EROARE 5: 'Person' este o clasa, nu o variabila printabila direct */
+    print(Person); 
 end_progr

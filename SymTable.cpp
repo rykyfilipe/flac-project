@@ -3,6 +3,8 @@
 SymTable::SymTable(string name, SymTable* parent) : scopeName(name), parent(parent) {}
 
 void SymTable::addSymbol(string type, string name, string category, string value) {
+    
+    cout << "[DEBUG] Adding " << name << " to scope " << scopeName << endl;
     if (ids.count(name)) {
         // Opțional: Poți arunca eroare dacă redeclari variabila în același scope
         cout << "Warning: Symbol " << name << " already defined in " << scopeName << endl;
@@ -15,6 +17,14 @@ void SymTable::addSymbol(string type, string name, string category, string value
 void SymTable::addFuncParam(string funcName, string paramType) {
     if (ids.count(funcName)) {
         ids[funcName].paramTypes.push_back(paramType);
+    }
+}
+
+void SymTable::updateValue(string name, string newValue) {
+    if (ids.count(name)) {
+        ids[name].value = newValue;
+    } else if (parent != NULL) {
+        parent->updateValue(name, newValue);
     }
 }
 

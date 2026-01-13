@@ -1,54 +1,47 @@
-class Person {
-    string name;
-    int age;
+class Vehicul {
+    string marca;
+    int an;
 
-    int getAge() {
-        int x;
-        x = age;
-        return x;
+    Vehicul(string m) {
+        marca = m;
+        an = 2024;
     }
 
-    float setAge(int a) {
-        age = a;
+    string getMarca() {
+        return marca;
     }
 }
 
-int sum(int a, int b, Product asdfd) {
-    int result;
-    result = a + b;
-    return result;
+Vehicul v;
+
+Vehicul creeazaMasina(string nume) {
+    v = new Vehicul(nume);
+    return v;
 }
 
-float avg(float a, float b) {
-    float r;
-    r = (a + b) / 2.0 & a;
-    return r;
-}
 int x;
-Product m = new Product(asdf);
+string salut;
+Vehicul masinaMea;
+string status;
+int calcul;
 
 begin_progr
-   
+    salut = "Masina noua";
     x = 10;
-    y = 3.5;
-    ok = true;
-    msg = "hello";
+    
+    masinaMea = creeazaMasina("Dacia");
 
-    Product.hello();
+    calcul = x * 2 + 50 / 2;
 
+    if (calcul > 20) {
+        status = "Calcul finalizat";
+        print(status);
+    }
+
+    while (x > 0) {
+        x = x - 1;
+    }
+
+    print(salut);
     print(x);
-    print(y);
-    print(msg);
-
-    x = sum(x, 5);
-    y = avg(y, 7.5, new Product());
-
-    if (x > 10) {
-        print(x);
-    }
-
-    while (x < 20 & x <= 8 | c) {
-        x = x + 1;
-        print(x);
-    }
 end_progr
