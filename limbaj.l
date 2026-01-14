@@ -30,7 +30,7 @@ using namespace std;
 "while"        { return WHILE; }
 "for"          { return FOR; }
 
-"=="|"!="|"<="|">="|"<"|">" { 
+"=="|"!="|"<="|">="|"<"|">"|"&&"|"||" { 
     yylval.Str = new std::string(yytext); 
     return CMP; 
 }

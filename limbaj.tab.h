@@ -41,14 +41,20 @@ extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
 /* Line 2058 of yacc.c  */
-#line 35 "limbaj.y"
+#line 36 "limbaj.y"
 
     #include <string>
+    #include <vector>
     using namespace std;
+
+    struct ExprInfo {
+        string type;
+        string value;
+    };
 
 
 /* Line 2058 of yacc.c  */
-#line 52 "limbaj.tab.h"
+#line 58 "limbaj.tab.h"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -82,14 +88,15 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 40 "limbaj.y"
+#line 47 "limbaj.y"
 
     std::string* Str;
-    /* NR, FNR și BVAL vor fi tratate ca Str pentru a stoca valoarea lor textuală în tabelă */
+    ExprInfo* EInfo;
+    std::vector<string>* ArgList;
 
 
 /* Line 2058 of yacc.c  */
-#line 93 "limbaj.tab.h"
+#line 100 "limbaj.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

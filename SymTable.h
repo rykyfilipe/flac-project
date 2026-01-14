@@ -11,37 +11,38 @@ class IdInfo {
 public:
     string type;
     string name;
-    string category; // "variable", "function", "class", "param"
-    string value;    // Pentru variabile (opțional, dacă e constantă)
-    vector<string> paramTypes; // Doar pentru funcții
+    string category; // "variable", "function", "class", "param", "object", "constructor"
+    string value;
+    vector<string> paramTypes;
 
     IdInfo() {}
     IdInfo(string type, string name, string category, string value = "") 
         : type(type), name(name), category(category), value(value) {}
 };
 
+struct ClassDefinition {
+    string className;
+    map<string, IdInfo> members;
+};
+
 class SymTable {
     SymTable* parent;
     map<string, IdInfo> ids;
-    string scopeName; // Numele scopului (ex: "Global", "Main", "Function X")
+    string scopeName;
 
 public:
+    static map<string, ClassDefinition> classRegistry;
+
     SymTable(string name, SymTable* parent = NULL);
-    
-    // Verifică dacă există (recursiv în părinți pentru utilizare)
     bool existsId(string s);
-    
-    // Adaugă simbol în tabelul curent
-    void addSymbol(string type, string name, string category, string value = "");
-    
-    // Adaugă info despre parametri (pentru funcții)
+    bool existsIdLocal(string s); 
+    bool addSymbol(string type, string name, string category, string value = "");
+    string getType(string name);
+    IdInfo* getSymbolInfo(string name);
     void addFuncParam(string funcName, string paramType);
-
     void updateValue(string name, string newValue);
-    
-    // Printează tabelul curent în fișier
     void printTable(ofstream& out);
-
     SymTable* getParent();
+    string getScopeName() { return scopeName; }
     ~SymTable();
 };

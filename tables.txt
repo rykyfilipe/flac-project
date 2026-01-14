@@ -1,15 +1,56 @@
-=== Symbol Table: Constructor: Person ===
-Parent Scope: Class: Person
+=== Symbol Table: Constructor: Vehicul ===
+Name 	 | Category 	 | Type 	 | Value/Params
 --------------------------------------------------
+a 	 | variable 	 | int 	 | 
+m 	 | param 	 | string 	 | 
+
+=== Symbol Table: Function: getMarca ===
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+
+=== Symbol Table: Class: Vehicul ===
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+Vehicul 	 | constructor 	 | class_type 	 | (string)
+a 	 | variable 	 | int 	 | 
+an 	 | variable 	 | int 	 | 
+getMarca 	 | function 	 | string 	 | ()
+marca 	 | variable 	 | string 	 | 
+
+=== Symbol Table: Function: sum ===
 Name 	 | Category 	 | Type 	 | Value/Params
 --------------------------------------------------
 a 	 | param 	 | int 	 | 
+b 	 | param 	 | int 	 | 
 
-=== Symbol Table: Class: Person ===
-Parent Scope: Global
---------------------------------------------------
+=== Symbol Table: Function: creeazaMasina ===
 Name 	 | Category 	 | Type 	 | Value/Params
 --------------------------------------------------
-Person 	 | constructor 	 | class_type 	 | 
-age 	 | variable 	 | int 	 | a
+nume 	 | param 	 | string 	 | 
+
+=== Symbol Table: If_Block ===
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+
+=== Symbol Table: While_Block ===
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+
+=== Symbol Table: Main ===
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+
+=== Symbol Table: Global ===
+Name 	 | Category 	 | Type 	 | Value/Params
+--------------------------------------------------
+Vehicul 	 | class 	 | class 	 | 
+calcul 	 | variable 	 | int 	 | 
+creeazaMasina 	 | function 	 | Vehicul 	 | (string)
+f 	 | variable 	 | bool 	 | 
+masinaMea 	 | object 	 | Vehicul 	 | 
+salut 	 | variable 	 | string 	 | 
+status 	 | variable 	 | string 	 | 
+sum 	 | function 	 | int 	 | (int, int)
+v 	 | object 	 | Vehicul 	 | 
+x 	 | variable 	 | int 	 | 
 

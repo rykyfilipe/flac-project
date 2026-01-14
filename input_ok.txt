@@ -1,15 +1,25 @@
 class Vehicul {
     string marca;
     int an;
+    int a;
 
     Vehicul(string m) {
+
+        int a;
+
         marca = m;
         an = 2024;
+
+
     }
 
     string getMarca() {
         return marca;
     }
+}
+
+int sum(int a, int b){
+    return a + b;
 }
 
 Vehicul v;
@@ -24,22 +34,28 @@ string salut;
 Vehicul masinaMea;
 string status;
 int calcul;
+bool f;
+
 
 begin_progr
     salut = "Masina noua";
     x = 10;
-    
+
     masinaMea = creeazaMasina("Dacia");
 
-    calcul = x * 2 + 50 / 2;
+    f = 3 && 1;
 
-    if (calcul > 20) {
+    masinaMea.marca = 111;
+
+    sum(3,3);
+
+    if (calcul - 20) {
         status = "Calcul finalizat";
         print(status);
     }
 
     while (x > 0) {
-        x = x - 1;
+        x = 123456;
     }
 
     print(salut);
