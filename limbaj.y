@@ -22,7 +22,6 @@ void enter_scope(string name) {
 
 void exit_scope() {
     if (current) {
-        current->printTable(tableFile);
         SymTable* parent = current->getParent();
         current = parent;
     }
@@ -64,8 +63,11 @@ void sem_error(string msg) {
 program
     : global_scope_start global_list main_block
       { 
-          cout << "Program is correct" << endl; 
-          exit_scope(); 
+          cout << "Program is correct. Generating recursive tables..." << endl;
+          
+          if (current) {
+              current->printTableRecursive(tableFile);
+          }
       }
     ;
 
@@ -217,34 +219,40 @@ assign_stmt
 
     | ID '.' ID ASSIGN expr
       {
-          // 1. Verificăm dacă obiectul (primul ID) este declarat
+          // 1. Verificăm dacă obiectul ($1) există
           IdInfo* objInfo = current->getSymbolInfo(*$1);
           if(!objInfo) {
               sem_error("Object '" + *$1 + "' is not declared.");
           } 
           else {
-              // 2. Luăm numele clasei din tipul obiectului
               string className = objInfo->type;
 
-              // 3. Verificăm dacă clasa există în registrul de clase
+              // 2. Verificăm dacă clasa există în registru
               if(SymTable::classRegistry.count(className)) {
                   auto& members = SymTable::classRegistry[className].members;
 
-                  // 4. Verificăm dacă field-ul (al doilea ID) există în acea clasă
+                  // 3. Verificăm dacă membrul ($3) există în clasă
                   if(members.count(*$3)) {
                       string fieldType = members[*$3].type;
 
-                      // 5. Verificăm compatibilitatea de tip între field și expresie
+                      // 4. Verificăm compatibilitatea de tip
                       if(fieldType != $5->type && $5->type != "error") {
-                          sem_error("Type mismatch: Field '" + *$3 + "' of class '" + className + 
-                                    "' is " + fieldType + ", but expression is " + $5->type);
+                          sem_error("Type mismatch: Field '" + *$3 + "' is " + fieldType + ", but expr is " + $5->type);
+                      } else {
+                          // --- LINIA LIPSA: AICI REALIZĂM ATRIBUIREA EFECTIVĂ ---
+                          // Actualizăm valoarea în registrul de clase pentru ca tabelul să o poată printa
+                          SymTable::classRegistry[className].members[*$3].value = $5->value;
+                          current->updateValue(*$3,$5->value);
+
+                          
+                          
+                          cout << "[DEBUG] Assigned value " << $5->value << " to " << *$1 << "." << *$3 << endl;
                       }
-                      // Succes semantic
                   } else {
                       sem_error("Class '" + className + "' does not have a member named '" + *$3 + "'");
                   }
               } else {
-                  sem_error("Variable '" + *$1 + "' (type " + className + ") does not refer to a valid class.");
+                  sem_error("Variable '" + *$1 + "' is not an object of a class.");
               }
           }
       }
@@ -330,8 +338,10 @@ expr
     | '(' expr ')' { $$ = $2; }
     | ID {
         string t = current->getType(*$1);
+        IdInfo* info = current->getSymbolInfo(*$1);
+        string v = (info != nullptr) ? info->value : ""; // Preluăm valoarea actuală
         if(t == "") { sem_error("Undefined variable: " + *$1); t = "error"; }
-        $$ = new ExprInfo{t, ""};
+        $$ = new ExprInfo{t, v};
     }
     | ID '(' args_list ')' {
         IdInfo* info = current->getSymbolInfo(*$1);
@@ -339,19 +349,37 @@ expr
         else $$ = new ExprInfo{info->type, ""};
     }
     | ID '.' ID {
-        IdInfo* obj = current->getSymbolInfo(*$1);
-        if(!obj) { sem_error("Object " + *$1 + " undefined"); $$ = new ExprInfo{"error",""}; }
-        else {
-            string cls = obj->type;
-            if(SymTable::classRegistry.count(cls) && SymTable::classRegistry[cls].members.count(*$3))
-                $$ = new ExprInfo{SymTable::classRegistry[cls].members[*$3].type, ""};
-            else { sem_error("Field " + *$3 + " not in class"); $$ = new ExprInfo{"error",""}; }
+            // 1. Căutăm obiectul (masinaMea) în tabelele de scope (Main/Global)
+            IdInfo* objInfo = current->getSymbolInfo(*$1);
+            if (!objInfo) {
+                sem_error("Object " + *$1 + " is not defined.");
+                $$ = new ExprInfo{"error", ""};
+            } else {
+                // 2. Aflăm tipul obiectului (Vehicul)
+                string className = objInfo->type;
+
+                // 3. Verificăm dacă acest tip există în registrul de clase
+                if (SymTable::classRegistry.count(className)) {
+                    // 4. Verificăm dacă membrul (marca) există în acea clasă
+                    if (SymTable::classRegistry[className].members.count(*$3)) {
+                        IdInfo memberInfo = SymTable::classRegistry[className].members[*$3];
+                        
+                        // Returnăm tipul membrului și valoarea lui actuală
+                        $$ = new ExprInfo{memberInfo.type, memberInfo.value};
+                    } else {
+                        sem_error("Class " + className + " does not have member " + *$3);
+                        $$ = new ExprInfo{"error", ""};
+                    }
+                } else {
+                    sem_error(*$1 + " is not an object of a defined class.");
+                    $$ = new ExprInfo{"error", ""};
+                }
+            }
         }
-    }
-    | NR     { $$ = new ExprInfo{"int", ""}; }
-    | FNR    { $$ = new ExprInfo{"float", ""}; }
-    | BVAL   { $$ = new ExprInfo{"bool", ""}; }
-    | STRING { $$ = new ExprInfo{"string", ""}; }
+    | NR     { $$ = new ExprInfo{"int", *$1}; }
+    | FNR    { $$ = new ExprInfo{"float", *$1}; }
+    | BVAL   { $$ = new ExprInfo{"bool", *$1}; }
+    | STRING { $$ = new ExprInfo{"string", *$1}; }
     | NEW ID '(' args_list ')' {
         if(SymTable::classRegistry.count(*$2) == 0) sem_error("Class " + *$2 + " not defined");
         $$ = new ExprInfo{*$2, ""};

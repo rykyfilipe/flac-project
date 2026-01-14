@@ -41,7 +41,7 @@ extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
 /* Line 2058 of yacc.c  */
-#line 36 "limbaj.y"
+#line 35 "limbaj.y"
 
     #include <string>
     #include <vector>
@@ -88,7 +88,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 47 "limbaj.y"
+#line 46 "limbaj.y"
 
     std::string* Str;
     ExprInfo* EInfo;

@@ -45,7 +45,7 @@ begin_progr
 
     f = 3 && 1;
 
-    masinaMea.marca = 111;
+    masinaMea.marca = "safaf";
 
     sum(3,3);
 

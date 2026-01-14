@@ -2,8 +2,11 @@
 
 map<string, ClassDefinition> SymTable::classRegistry;
 
-SymTable::SymTable(string name, SymTable* parent) : scopeName(name), parent(parent) {}
-
+SymTable::SymTable(string name, SymTable* parent) : scopeName(name), parent(parent) {
+    if (parent != NULL) {
+        parent->children.push_back(this);
+    }
+}
 bool SymTable::existsIdLocal(string s) {
     return ids.count(s) > 0;
 }
@@ -70,4 +73,49 @@ void SymTable::printTable(ofstream& out) {
     out << endl;
 }
 
+void SymTable::printTableRecursive(ofstream& out, int level) {
+    // Generăm spațiile pentru indentare
+    string indent = "";
+    for (int i = 0; i < level; i++) {
+        indent += "    "; 
+    }
+
+    out << indent << "=== TABELA: " << scopeName << " ===" << endl;
+    out << indent << "Nume\t| Cat\t| Tip\t| Valoare/Parametri" << endl;
+    out << indent << "------------------------------------------------" << endl;
+
+    for (auto const& [nume, info] : ids) {
+        string valoareFinala = info.value;
+
+        // Daca e clasa, verificam in registru pentru valorile la zi
+        if (scopeName.find("Class: ") == 0) {
+            string numeClasa = scopeName.substr(7);
+            if (classRegistry.count(numeClasa)) {
+                if (classRegistry[numeClasa].members.count(nume)) {
+                    valoareFinala = classRegistry[numeClasa].members[nume].value;
+                }
+            }
+        }
+
+        out << indent << nume << "\t| " << info.category << "\t| " << info.type << "\t| ";
+        
+        // Afisam parametrii daca e functie, altfel valoarea
+        if (info.category == "function" || info.category == "constructor") {
+            out << "(";
+            for (int i = 0; i < info.paramTypes.size(); i++) {
+                out << info.paramTypes[i] << (i < info.paramTypes.size() - 1 ? ", " : "");
+            }
+            out << ")";
+        } else {
+            out << valoareFinala;
+        }
+        out << endl;
+    }
+    out << endl;
+
+    // Apelam recursiv pentru toti copiii (sub-scopiurile)
+    for (int i = 0; i < children.size(); i++) {
+        children[i]->printTableRecursive(out, level + 1);
+    }
+}
 SymTable::~SymTable() { ids.clear(); }

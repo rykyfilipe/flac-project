@@ -29,11 +29,12 @@ class SymTable {
     SymTable* parent;
     map<string, IdInfo> ids;
     string scopeName;
+    vector<SymTable*> children;
 
 public:
     static map<string, ClassDefinition> classRegistry;
 
-    SymTable(string name, SymTable* parent = NULL);
+    SymTable(string name, SymTable* parent);
     bool existsId(string s);
     bool existsIdLocal(string s); 
     bool addSymbol(string type, string name, string category, string value = "");
@@ -44,5 +45,6 @@ public:
     void printTable(ofstream& out);
     SymTable* getParent();
     string getScopeName() { return scopeName; }
+    void printTableRecursive(ofstream& out, int level = 0);
     ~SymTable();
 };

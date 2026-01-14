@@ -88,7 +88,6 @@ void enter_scope(string name) {
 
 void exit_scope() {
     if (current) {
-        current->printTable(tableFile);
         SymTable* parent = current->getParent();
         current = parent;
     }
@@ -99,7 +98,7 @@ void sem_error(string msg) {
 }
 
 /* Line 371 of yacc.c  */
-#line 103 "limbaj.tab.c"
+#line 102 "limbaj.tab.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -130,7 +129,7 @@ extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
 /* Line 387 of yacc.c  */
-#line 36 "limbaj.y"
+#line 35 "limbaj.y"
 
     #include <string>
     #include <vector>
@@ -143,7 +142,7 @@ extern int yydebug;
 
 
 /* Line 387 of yacc.c  */
-#line 147 "limbaj.tab.c"
+#line 146 "limbaj.tab.c"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -177,7 +176,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 47 "limbaj.y"
+#line 46 "limbaj.y"
 
     std::string* Str;
     ExprInfo* EInfo;
@@ -185,7 +184,7 @@ typedef union YYSTYPE
 
 
 /* Line 387 of yacc.c  */
-#line 189 "limbaj.tab.c"
+#line 188 "limbaj.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -213,7 +212,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 217 "limbaj.tab.c"
+#line 216 "limbaj.tab.c"
 
 #ifdef short
 # undef short
@@ -532,13 +531,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    65,    65,    73,    76,    78,    79,    80,    81,    85,
-      85,    91,    90,   102,   104,   105,   111,   110,   121,   120,
-     130,   129,   140,   139,   149,   148,   158,   157,   167,   168,
-     168,   171,   172,   176,   183,   192,   194,   198,   199,   200,
-     201,   203,   207,   218,   256,   256,   257,   257,   261,   275,
-     290,   295,   305,   310,   314,   318,   322,   326,   330,   331,
-     336,   341,   351,   352,   353,   354,   355,   362,   363,   364
+       0,    64,    64,    75,    78,    80,    81,    82,    83,    87,
+      87,    93,    92,   104,   106,   107,   113,   112,   123,   122,
+     132,   131,   142,   141,   151,   150,   160,   159,   169,   170,
+     170,   173,   174,   178,   185,   194,   196,   200,   201,   202,
+     203,   205,   209,   220,   264,   264,   265,   265,   269,   283,
+     298,   303,   313,   318,   322,   326,   330,   334,   338,   339,
+     346,   351,   379,   380,   381,   382,   383,   390,   391,   392
 };
 #endif
 
@@ -1536,34 +1535,37 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 66 "limbaj.y"
+#line 65 "limbaj.y"
     { 
-          cout << "Program is correct" << endl; 
-          exit_scope(); 
+          cout << "Program is correct. Generating recursive tables..." << endl;
+          
+          if (current) {
+              current->printTableRecursive(tableFile);
+          }
       }
     break;
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 73 "limbaj.y"
+#line 75 "limbaj.y"
     { enter_scope("Global"); }
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 85 "limbaj.y"
+#line 87 "limbaj.y"
     { enter_scope("Main"); }
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 85 "limbaj.y"
+#line 87 "limbaj.y"
     { exit_scope(); }
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 91 "limbaj.y"
+#line 93 "limbaj.y"
     { 
         if(!current->addSymbol("class", *(yyvsp[(2) - (2)].Str), "class"))
             sem_error("Class " + *(yyvsp[(2) - (2)].Str) + " already defined.");
@@ -1575,13 +1577,13 @@ yyreduce:
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 99 "limbaj.y"
+#line 101 "limbaj.y"
     { exit_scope(); }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 111 "limbaj.y"
+#line 113 "limbaj.y"
     { 
          if(!current->addSymbol(*(yyvsp[(1) - (3)].Str), *(yyvsp[(2) - (3)].Str), "function"))
             sem_error("Function " + *(yyvsp[(2) - (3)].Str) + " already defined.");
@@ -1592,13 +1594,13 @@ yyreduce:
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 118 "limbaj.y"
+#line 120 "limbaj.y"
     { currentFuncName = ""; exit_scope(); }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 121 "limbaj.y"
+#line 123 "limbaj.y"
     { 
          if(!current->addSymbol(*(yyvsp[(1) - (4)].Str), *(yyvsp[(2) - (4)].Str), "function"))
             sem_error("Function " + *(yyvsp[(2) - (4)].Str) + " already defined.");
@@ -1608,13 +1610,13 @@ yyreduce:
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 127 "limbaj.y"
+#line 129 "limbaj.y"
     { exit_scope(); }
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 130 "limbaj.y"
+#line 132 "limbaj.y"
     { 
          if(!current->addSymbol(*(yyvsp[(1) - (3)].Str), *(yyvsp[(2) - (3)].Str), "function"))
             sem_error("Function " + *(yyvsp[(2) - (3)].Str) + " already defined.");
@@ -1625,13 +1627,13 @@ yyreduce:
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 137 "limbaj.y"
+#line 139 "limbaj.y"
     { currentFuncName = ""; exit_scope(); }
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 140 "limbaj.y"
+#line 142 "limbaj.y"
     { 
          if(!current->addSymbol(*(yyvsp[(1) - (4)].Str), *(yyvsp[(2) - (4)].Str), "function"))
             sem_error("Function " + *(yyvsp[(2) - (4)].Str) + " already defined.");
@@ -1641,13 +1643,13 @@ yyreduce:
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 146 "limbaj.y"
+#line 148 "limbaj.y"
     { exit_scope(); }
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 149 "limbaj.y"
+#line 151 "limbaj.y"
     { 
          current->addSymbol("class_type", *(yyvsp[(1) - (2)].Str), "constructor");
          currentFuncName = *(yyvsp[(1) - (2)].Str);
@@ -1657,13 +1659,13 @@ yyreduce:
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 155 "limbaj.y"
+#line 157 "limbaj.y"
     { currentFuncName = ""; exit_scope(); }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 158 "limbaj.y"
+#line 160 "limbaj.y"
     { 
          current->addSymbol("class_type", *(yyvsp[(1) - (3)].Str), "constructor");
          enter_scope("Constructor: " + *(yyvsp[(1) - (3)].Str)); 
@@ -1672,13 +1674,13 @@ yyreduce:
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 163 "limbaj.y"
+#line 165 "limbaj.y"
     { exit_scope(); }
     break;
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 177 "limbaj.y"
+#line 179 "limbaj.y"
     {
           if(!current->addSymbol(*(yyvsp[(1) - (2)].Str), *(yyvsp[(2) - (2)].Str), "param"))
              sem_error("Parameter " + *(yyvsp[(2) - (2)].Str) + " duplicated.");
@@ -1689,7 +1691,7 @@ yyreduce:
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 184 "limbaj.y"
+#line 186 "limbaj.y"
     {
           if(!current->addSymbol(*(yyvsp[(1) - (2)].Str), *(yyvsp[(2) - (2)].Str), "param"))
              sem_error("Parameter " + *(yyvsp[(2) - (2)].Str) + " duplicated.");
@@ -1700,13 +1702,13 @@ yyreduce:
 
   case 40:
 /* Line 1792 of yacc.c  */
-#line 202 "limbaj.y"
+#line 204 "limbaj.y"
     { /* Predefined function logic */ }
     break;
 
   case 42:
 /* Line 1792 of yacc.c  */
-#line 208 "limbaj.y"
+#line 210 "limbaj.y"
     { 
         IdInfo* info = current->getSymbolInfo(*(yyvsp[(1) - (3)].Str));
         if(!info) 
@@ -1720,36 +1722,42 @@ yyreduce:
 
   case 43:
 /* Line 1792 of yacc.c  */
-#line 219 "limbaj.y"
+#line 221 "limbaj.y"
     {
-          // 1. Verificăm dacă obiectul (primul ID) este declarat
+          // 1. Verificăm dacă obiectul ($1) există
           IdInfo* objInfo = current->getSymbolInfo(*(yyvsp[(1) - (5)].Str));
           if(!objInfo) {
               sem_error("Object '" + *(yyvsp[(1) - (5)].Str) + "' is not declared.");
           } 
           else {
-              // 2. Luăm numele clasei din tipul obiectului
               string className = objInfo->type;
 
-              // 3. Verificăm dacă clasa există în registrul de clase
+              // 2. Verificăm dacă clasa există în registru
               if(SymTable::classRegistry.count(className)) {
                   auto& members = SymTable::classRegistry[className].members;
 
-                  // 4. Verificăm dacă field-ul (al doilea ID) există în acea clasă
+                  // 3. Verificăm dacă membrul ($3) există în clasă
                   if(members.count(*(yyvsp[(3) - (5)].Str))) {
                       string fieldType = members[*(yyvsp[(3) - (5)].Str)].type;
 
-                      // 5. Verificăm compatibilitatea de tip între field și expresie
+                      // 4. Verificăm compatibilitatea de tip
                       if(fieldType != (yyvsp[(5) - (5)].EInfo)->type && (yyvsp[(5) - (5)].EInfo)->type != "error") {
-                          sem_error("Type mismatch: Field '" + *(yyvsp[(3) - (5)].Str) + "' of class '" + className + 
-                                    "' is " + fieldType + ", but expression is " + (yyvsp[(5) - (5)].EInfo)->type);
+                          sem_error("Type mismatch: Field '" + *(yyvsp[(3) - (5)].Str) + "' is " + fieldType + ", but expr is " + (yyvsp[(5) - (5)].EInfo)->type);
+                      } else {
+                          // --- LINIA LIPSA: AICI REALIZĂM ATRIBUIREA EFECTIVĂ ---
+                          // Actualizăm valoarea în registrul de clase pentru ca tabelul să o poată printa
+                          SymTable::classRegistry[className].members[*(yyvsp[(3) - (5)].Str)].value = (yyvsp[(5) - (5)].EInfo)->value;
+                          current->updateValue(*(yyvsp[(3) - (5)].Str),(yyvsp[(5) - (5)].EInfo)->value);
+
+                          
+                          
+                          cout << "[DEBUG] Assigned value " << (yyvsp[(5) - (5)].EInfo)->value << " to " << *(yyvsp[(1) - (5)].Str) << "." << *(yyvsp[(3) - (5)].Str) << endl;
                       }
-                      // Succes semantic
                   } else {
                       sem_error("Class '" + className + "' does not have a member named '" + *(yyvsp[(3) - (5)].Str) + "'");
                   }
               } else {
-                  sem_error("Variable '" + *(yyvsp[(1) - (5)].Str) + "' (type " + className + ") does not refer to a valid class.");
+                  sem_error("Variable '" + *(yyvsp[(1) - (5)].Str) + "' is not an object of a class.");
               }
           }
       }
@@ -1757,31 +1765,31 @@ yyreduce:
 
   case 44:
 /* Line 1792 of yacc.c  */
-#line 256 "limbaj.y"
+#line 264 "limbaj.y"
     { enter_scope("If_Block"); }
     break;
 
   case 45:
 /* Line 1792 of yacc.c  */
-#line 256 "limbaj.y"
+#line 264 "limbaj.y"
     { exit_scope(); }
     break;
 
   case 46:
 /* Line 1792 of yacc.c  */
-#line 257 "limbaj.y"
+#line 265 "limbaj.y"
     { enter_scope("While_Block"); }
     break;
 
   case 47:
 /* Line 1792 of yacc.c  */
-#line 257 "limbaj.y"
+#line 265 "limbaj.y"
     { exit_scope(); }
     break;
 
   case 48:
 /* Line 1792 of yacc.c  */
-#line 262 "limbaj.y"
+#line 270 "limbaj.y"
     {
           IdInfo* info = current->getSymbolInfo(*(yyvsp[(1) - (4)].Str));
           if(!info) sem_error("Function " + *(yyvsp[(1) - (4)].Str) + " not defined.");
@@ -1799,7 +1807,7 @@ yyreduce:
 
   case 49:
 /* Line 1792 of yacc.c  */
-#line 276 "limbaj.y"
+#line 284 "limbaj.y"
     {
           IdInfo* obj = current->getSymbolInfo(*(yyvsp[(1) - (6)].Str));
           if(!obj) sem_error("Object " + *(yyvsp[(1) - (6)].Str) + " undeclared.");
@@ -1815,7 +1823,7 @@ yyreduce:
 
   case 50:
 /* Line 1792 of yacc.c  */
-#line 291 "limbaj.y"
+#line 299 "limbaj.y"
     { 
         if(!current->addSymbol(*(yyvsp[(1) - (3)].Str), *(yyvsp[(2) - (3)].Str), "variable"))
             sem_error("Variable " + *(yyvsp[(2) - (3)].Str) + " redeclared.");
@@ -1824,7 +1832,7 @@ yyreduce:
 
   case 51:
 /* Line 1792 of yacc.c  */
-#line 296 "limbaj.y"
+#line 304 "limbaj.y"
     { 
         if(*(yyvsp[(1) - (5)].Str) != (yyvsp[(4) - (5)].EInfo)->type && (yyvsp[(4) - (5)].EInfo)->type != "error")
             sem_error("Type mismatch in declaration of " + *(yyvsp[(2) - (5)].Str));
@@ -1835,13 +1843,13 @@ yyreduce:
 
   case 52:
 /* Line 1792 of yacc.c  */
-#line 306 "limbaj.y"
+#line 314 "limbaj.y"
     { if(!current->addSymbol(*(yyvsp[(1) - (3)].Str), *(yyvsp[(2) - (3)].Str), "object")) sem_error("Object " + *(yyvsp[(2) - (3)].Str) + " redeclared."); }
     break;
 
   case 53:
 /* Line 1792 of yacc.c  */
-#line 310 "limbaj.y"
+#line 318 "limbaj.y"
     {
         if((yyvsp[(1) - (3)].EInfo)->type != (yyvsp[(3) - (3)].EInfo)->type) { sem_error("Type mismatch: " + (yyvsp[(1) - (3)].EInfo)->type + " + " + (yyvsp[(3) - (3)].EInfo)->type); (yyval.EInfo) = new ExprInfo{"error",""}; }
         else (yyval.EInfo) = new ExprInfo{(yyvsp[(1) - (3)].EInfo)->type, ""};
@@ -1850,7 +1858,7 @@ yyreduce:
 
   case 54:
 /* Line 1792 of yacc.c  */
-#line 314 "limbaj.y"
+#line 322 "limbaj.y"
     {
         if((yyvsp[(1) - (3)].EInfo)->type != (yyvsp[(3) - (3)].EInfo)->type) { sem_error("Type mismatch: " + (yyvsp[(1) - (3)].EInfo)->type + " - " + (yyvsp[(3) - (3)].EInfo)->type); (yyval.EInfo) = new ExprInfo{"error",""}; }
         else (yyval.EInfo) = new ExprInfo{(yyvsp[(1) - (3)].EInfo)->type, ""};
@@ -1859,7 +1867,7 @@ yyreduce:
 
   case 55:
 /* Line 1792 of yacc.c  */
-#line 318 "limbaj.y"
+#line 326 "limbaj.y"
     {
         if((yyvsp[(1) - (3)].EInfo)->type != (yyvsp[(3) - (3)].EInfo)->type) { sem_error("Type mismatch: " + (yyvsp[(1) - (3)].EInfo)->type + " * " + (yyvsp[(3) - (3)].EInfo)->type); (yyval.EInfo) = new ExprInfo{"error",""}; }
         else (yyval.EInfo) = new ExprInfo{(yyvsp[(1) - (3)].EInfo)->type, ""};
@@ -1868,7 +1876,7 @@ yyreduce:
 
   case 56:
 /* Line 1792 of yacc.c  */
-#line 322 "limbaj.y"
+#line 330 "limbaj.y"
     {
         if((yyvsp[(1) - (3)].EInfo)->type != (yyvsp[(3) - (3)].EInfo)->type) { sem_error("Type mismatch: " + (yyvsp[(1) - (3)].EInfo)->type + " / " + (yyvsp[(3) - (3)].EInfo)->type); (yyval.EInfo) = new ExprInfo{"error",""}; }
         else (yyval.EInfo) = new ExprInfo{(yyvsp[(1) - (3)].EInfo)->type, ""};
@@ -1877,7 +1885,7 @@ yyreduce:
 
   case 57:
 /* Line 1792 of yacc.c  */
-#line 326 "limbaj.y"
+#line 334 "limbaj.y"
     {
         if((yyvsp[(1) - (3)].EInfo)->type != (yyvsp[(3) - (3)].EInfo)->type) { sem_error("Comparison type mismatch"); (yyval.EInfo) = new ExprInfo{"error",""}; }
         else (yyval.EInfo) = new ExprInfo{"bool", ""};
@@ -1886,23 +1894,25 @@ yyreduce:
 
   case 58:
 /* Line 1792 of yacc.c  */
-#line 330 "limbaj.y"
+#line 338 "limbaj.y"
     { (yyval.EInfo) = (yyvsp[(2) - (3)].EInfo); }
     break;
 
   case 59:
 /* Line 1792 of yacc.c  */
-#line 331 "limbaj.y"
+#line 339 "limbaj.y"
     {
         string t = current->getType(*(yyvsp[(1) - (1)].Str));
+        IdInfo* info = current->getSymbolInfo(*(yyvsp[(1) - (1)].Str));
+        string v = (info != nullptr) ? info->value : ""; // Preluăm valoarea actuală
         if(t == "") { sem_error("Undefined variable: " + *(yyvsp[(1) - (1)].Str)); t = "error"; }
-        (yyval.EInfo) = new ExprInfo{t, ""};
+        (yyval.EInfo) = new ExprInfo{t, v};
     }
     break;
 
   case 60:
 /* Line 1792 of yacc.c  */
-#line 336 "limbaj.y"
+#line 346 "limbaj.y"
     {
         IdInfo* info = current->getSymbolInfo(*(yyvsp[(1) - (4)].Str));
         if(!info) { sem_error("Function " + *(yyvsp[(1) - (4)].Str) + " undefined"); (yyval.EInfo) = new ExprInfo{"error",""}; }
@@ -1912,46 +1922,64 @@ yyreduce:
 
   case 61:
 /* Line 1792 of yacc.c  */
-#line 341 "limbaj.y"
+#line 351 "limbaj.y"
     {
-        IdInfo* obj = current->getSymbolInfo(*(yyvsp[(1) - (3)].Str));
-        if(!obj) { sem_error("Object " + *(yyvsp[(1) - (3)].Str) + " undefined"); (yyval.EInfo) = new ExprInfo{"error",""}; }
-        else {
-            string cls = obj->type;
-            if(SymTable::classRegistry.count(cls) && SymTable::classRegistry[cls].members.count(*(yyvsp[(3) - (3)].Str)))
-                (yyval.EInfo) = new ExprInfo{SymTable::classRegistry[cls].members[*(yyvsp[(3) - (3)].Str)].type, ""};
-            else { sem_error("Field " + *(yyvsp[(3) - (3)].Str) + " not in class"); (yyval.EInfo) = new ExprInfo{"error",""}; }
+            // 1. Căutăm obiectul (masinaMea) în tabelele de scope (Main/Global)
+            IdInfo* objInfo = current->getSymbolInfo(*(yyvsp[(1) - (3)].Str));
+            if (!objInfo) {
+                sem_error("Object " + *(yyvsp[(1) - (3)].Str) + " is not defined.");
+                (yyval.EInfo) = new ExprInfo{"error", ""};
+            } else {
+                // 2. Aflăm tipul obiectului (Vehicul)
+                string className = objInfo->type;
+
+                // 3. Verificăm dacă acest tip există în registrul de clase
+                if (SymTable::classRegistry.count(className)) {
+                    // 4. Verificăm dacă membrul (marca) există în acea clasă
+                    if (SymTable::classRegistry[className].members.count(*(yyvsp[(3) - (3)].Str))) {
+                        IdInfo memberInfo = SymTable::classRegistry[className].members[*(yyvsp[(3) - (3)].Str)];
+                        
+                        // Returnăm tipul membrului și valoarea lui actuală
+                        (yyval.EInfo) = new ExprInfo{memberInfo.type, memberInfo.value};
+                    } else {
+                        sem_error("Class " + className + " does not have member " + *(yyvsp[(3) - (3)].Str));
+                        (yyval.EInfo) = new ExprInfo{"error", ""};
+                    }
+                } else {
+                    sem_error(*(yyvsp[(1) - (3)].Str) + " is not an object of a defined class.");
+                    (yyval.EInfo) = new ExprInfo{"error", ""};
+                }
+            }
         }
-    }
     break;
 
   case 62:
 /* Line 1792 of yacc.c  */
-#line 351 "limbaj.y"
-    { (yyval.EInfo) = new ExprInfo{"int", ""}; }
+#line 379 "limbaj.y"
+    { (yyval.EInfo) = new ExprInfo{"int", *(yyvsp[(1) - (1)].Str)}; }
     break;
 
   case 63:
 /* Line 1792 of yacc.c  */
-#line 352 "limbaj.y"
-    { (yyval.EInfo) = new ExprInfo{"float", ""}; }
+#line 380 "limbaj.y"
+    { (yyval.EInfo) = new ExprInfo{"float", *(yyvsp[(1) - (1)].Str)}; }
     break;
 
   case 64:
 /* Line 1792 of yacc.c  */
-#line 353 "limbaj.y"
-    { (yyval.EInfo) = new ExprInfo{"bool", ""}; }
+#line 381 "limbaj.y"
+    { (yyval.EInfo) = new ExprInfo{"bool", *(yyvsp[(1) - (1)].Str)}; }
     break;
 
   case 65:
 /* Line 1792 of yacc.c  */
-#line 354 "limbaj.y"
-    { (yyval.EInfo) = new ExprInfo{"string", ""}; }
+#line 382 "limbaj.y"
+    { (yyval.EInfo) = new ExprInfo{"string", *(yyvsp[(1) - (1)].Str)}; }
     break;
 
   case 66:
 /* Line 1792 of yacc.c  */
-#line 355 "limbaj.y"
+#line 383 "limbaj.y"
     {
         if(SymTable::classRegistry.count(*(yyvsp[(2) - (5)].Str)) == 0) sem_error("Class " + *(yyvsp[(2) - (5)].Str) + " not defined");
         (yyval.EInfo) = new ExprInfo{*(yyvsp[(2) - (5)].Str), ""};
@@ -1960,25 +1988,25 @@ yyreduce:
 
   case 67:
 /* Line 1792 of yacc.c  */
-#line 362 "limbaj.y"
+#line 390 "limbaj.y"
     { (yyval.ArgList) = new vector<string>(); }
     break;
 
   case 68:
 /* Line 1792 of yacc.c  */
-#line 363 "limbaj.y"
+#line 391 "limbaj.y"
     { (yyval.ArgList) = new vector<string>(); (yyval.ArgList)->push_back((yyvsp[(1) - (1)].EInfo)->type); }
     break;
 
   case 69:
 /* Line 1792 of yacc.c  */
-#line 364 "limbaj.y"
+#line 392 "limbaj.y"
     { (yyvsp[(1) - (3)].ArgList)->push_back((yyvsp[(3) - (3)].EInfo)->type); (yyval.ArgList) = (yyvsp[(1) - (3)].ArgList); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1982 "limbaj.tab.c"
+#line 2010 "limbaj.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2210,7 +2238,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 367 "limbaj.y"
+#line 395 "limbaj.y"
 
 
 void yyerror(const char* s) {

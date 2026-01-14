@@ -1,56 +1,56 @@
-=== Symbol Table: Constructor: Vehicul ===
-Name 	 | Category 	 | Type 	 | Value/Params
---------------------------------------------------
-a 	 | variable 	 | int 	 | 
-m 	 | param 	 | string 	 | 
+=== TABELA: Global ===
+Nume	| Cat	| Tip	| Valoare/Parametri
+------------------------------------------------
+Vehicul	| class	| class	| 
+calcul	| variable	| int	| 
+creeazaMasina	| function	| Vehicul	| (string)
+f	| variable	| bool	| 
+masinaMea	| object	| Vehicul	| 
+salut	| variable	| string	| Masina noua
+status	| variable	| string	| Calcul finalizat
+sum	| function	| int	| (int, int)
+v	| object	| Vehicul	| 
+x	| variable	| int	| 123456
 
-=== Symbol Table: Function: getMarca ===
-Name 	 | Category 	 | Type 	 | Value/Params
---------------------------------------------------
+    === TABELA: Class: Vehicul ===
+    Nume	| Cat	| Tip	| Valoare/Parametri
+    ------------------------------------------------
+    Vehicul	| constructor	| class_type	| (string)
+    a	| variable	| int	| 
+    an	| variable	| int	| 
+    getMarca	| function	| string	| ()
+    marca	| variable	| string	| safaf
 
-=== Symbol Table: Class: Vehicul ===
-Name 	 | Category 	 | Type 	 | Value/Params
---------------------------------------------------
-Vehicul 	 | constructor 	 | class_type 	 | (string)
-a 	 | variable 	 | int 	 | 
-an 	 | variable 	 | int 	 | 
-getMarca 	 | function 	 | string 	 | ()
-marca 	 | variable 	 | string 	 | 
+        === TABELA: Constructor: Vehicul ===
+        Nume	| Cat	| Tip	| Valoare/Parametri
+        ------------------------------------------------
+        a	| variable	| int	| 
+        m	| param	| string	| 
 
-=== Symbol Table: Function: sum ===
-Name 	 | Category 	 | Type 	 | Value/Params
---------------------------------------------------
-a 	 | param 	 | int 	 | 
-b 	 | param 	 | int 	 | 
+        === TABELA: Function: getMarca ===
+        Nume	| Cat	| Tip	| Valoare/Parametri
+        ------------------------------------------------
 
-=== Symbol Table: Function: creeazaMasina ===
-Name 	 | Category 	 | Type 	 | Value/Params
---------------------------------------------------
-nume 	 | param 	 | string 	 | 
+    === TABELA: Function: sum ===
+    Nume	| Cat	| Tip	| Valoare/Parametri
+    ------------------------------------------------
+    a	| param	| int	| 
+    b	| param	| int	| 
 
-=== Symbol Table: If_Block ===
-Name 	 | Category 	 | Type 	 | Value/Params
---------------------------------------------------
+    === TABELA: Function: creeazaMasina ===
+    Nume	| Cat	| Tip	| Valoare/Parametri
+    ------------------------------------------------
+    nume	| param	| string	| 
 
-=== Symbol Table: While_Block ===
-Name 	 | Category 	 | Type 	 | Value/Params
---------------------------------------------------
+    === TABELA: Main ===
+    Nume	| Cat	| Tip	| Valoare/Parametri
+    ------------------------------------------------
 
-=== Symbol Table: Main ===
-Name 	 | Category 	 | Type 	 | Value/Params
---------------------------------------------------
+        === TABELA: If_Block ===
+        Nume	| Cat	| Tip	| Valoare/Parametri
+        ------------------------------------------------
 
-=== Symbol Table: Global ===
-Name 	 | Category 	 | Type 	 | Value/Params
---------------------------------------------------
-Vehicul 	 | class 	 | class 	 | 
-calcul 	 | variable 	 | int 	 | 
-creeazaMasina 	 | function 	 | Vehicul 	 | (string)
-f 	 | variable 	 | bool 	 | 
-masinaMea 	 | object 	 | Vehicul 	 | 
-salut 	 | variable 	 | string 	 | 
-status 	 | variable 	 | string 	 | 
-sum 	 | function 	 | int 	 | (int, int)
-v 	 | object 	 | Vehicul 	 | 
-x 	 | variable 	 | int 	 | 
+        === TABELA: While_Block ===
+        Nume	| Cat	| Tip	| Valoare/Parametri
+        ------------------------------------------------
 
