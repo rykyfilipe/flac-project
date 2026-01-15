@@ -87,7 +87,6 @@ main_block
     : BGIN { enter_scope("Main"); } stmt_list END { exit_scope(); }
     ;
 
-/* DECLARATII CLASE - Doar in Global Scope conform cerintei */
 class_decl
     : CLASS ID 
       { 
@@ -165,7 +164,6 @@ func_decl
       { exit_scope(); }
     ;
 
-/* Restricție: variabilele locale doar la începutul funcției */
 func_body : decl_list stmt_list ;
 decl_list : /* empty */ | decl_list var_decl ;
 
@@ -219,7 +217,6 @@ assign_stmt
 
     | ID '.' ID ASSIGN expr
       {
-          // 1. Verificăm dacă obiectul ($1) există
           IdInfo* objInfo = current->getSymbolInfo(*$1);
           if(!objInfo) {
               sem_error("Object '" + *$1 + "' is not declared.");
@@ -227,20 +224,15 @@ assign_stmt
           else {
               string className = objInfo->type;
 
-              // 2. Verificăm dacă clasa există în registru
               if(SymTable::classRegistry.count(className)) {
                   auto& members = SymTable::classRegistry[className].members;
 
-                  // 3. Verificăm dacă membrul ($3) există în clasă
                   if(members.count(*$3)) {
                       string fieldType = members[*$3].type;
 
-                      // 4. Verificăm compatibilitatea de tip
                       if(fieldType != $5->type && $5->type != "error") {
                           sem_error("Type mismatch: Field '" + *$3 + "' is " + fieldType + ", but expr is " + $5->type);
                       } else {
-                          // --- LINIA LIPSA: AICI REALIZĂM ATRIBUIREA EFECTIVĂ ---
-                          // Actualizăm valoarea în registrul de clase pentru ca tabelul să o poată printa
                           SymTable::classRegistry[className].members[*$3].value = $5->value;
                           current->updateValue(*$3,$5->value);
 
@@ -349,22 +341,17 @@ expr
         else $$ = new ExprInfo{info->type, ""};
     }
     | ID '.' ID {
-            // 1. Căutăm obiectul (masinaMea) în tabelele de scope (Main/Global)
             IdInfo* objInfo = current->getSymbolInfo(*$1);
             if (!objInfo) {
                 sem_error("Object " + *$1 + " is not defined.");
                 $$ = new ExprInfo{"error", ""};
             } else {
-                // 2. Aflăm tipul obiectului (Vehicul)
                 string className = objInfo->type;
 
-                // 3. Verificăm dacă acest tip există în registrul de clase
                 if (SymTable::classRegistry.count(className)) {
-                    // 4. Verificăm dacă membrul (marca) există în acea clasă
                     if (SymTable::classRegistry[className].members.count(*$3)) {
                         IdInfo memberInfo = SymTable::classRegistry[className].members[*$3];
                         
-                        // Returnăm tipul membrului și valoarea lui actuală
                         $$ = new ExprInfo{memberInfo.type, memberInfo.value};
                     } else {
                         sem_error("Class " + className + " does not have member " + *$3);

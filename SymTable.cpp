@@ -74,7 +74,6 @@ void SymTable::printTable(ofstream& out) {
 }
 
 void SymTable::printTableRecursive(ofstream& out, int level) {
-    // Generăm spațiile pentru indentare
     string indent = "";
     for (int i = 0; i < level; i++) {
         indent += "    "; 
@@ -87,7 +86,6 @@ void SymTable::printTableRecursive(ofstream& out, int level) {
     for (auto const& [nume, info] : ids) {
         string valoareFinala = info.value;
 
-        // Daca e clasa, verificam in registru pentru valorile la zi
         if (scopeName.find("Class: ") == 0) {
             string numeClasa = scopeName.substr(7);
             if (classRegistry.count(numeClasa)) {
@@ -99,7 +97,6 @@ void SymTable::printTableRecursive(ofstream& out, int level) {
 
         out << indent << nume << "\t| " << info.category << "\t| " << info.type << "\t| ";
         
-        // Afisam parametrii daca e functie, altfel valoarea
         if (info.category == "function" || info.category == "constructor") {
             out << "(";
             for (int i = 0; i < info.paramTypes.size(); i++) {
